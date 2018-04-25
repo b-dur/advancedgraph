@@ -39,7 +39,7 @@
         .reduce(function (obj, pair) {
           var values = pair.split('=');
           if (values.length === 2) {
-            obj[values[0]] = values[1];
+            obj[values[0]] = decodeURI(values[1]);
           }
           return obj;
         }, {});
