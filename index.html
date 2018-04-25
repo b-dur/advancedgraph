@@ -1,0 +1,77 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Advanced graph</title>
+</head>
+
+<body style="margin:0;font-family: tahoma;font-weight:bold;" onload="onload()">
+  <div style="position: fixed;">
+
+    <input type="text" value="cost" id="pillar1" onkeypress="onChange(this)">
+    <input type="text" value="productivity" id="pillar2" onkeypress="onChange(this)">
+    <input type="text" value="quality" id="pillar3" onkeypress="onChange(this)">
+  </div>
+  <div style="height: 100vh;width: 100vw;display: flex; align-items: center; justify-content: center;">
+    <div style="position: relative;">
+      <img src="./graph.png" alt="Advanced graph">
+      <div style="display: flex; text-align: center; margin-right:9px; margin-left: 34px">
+        <div style="width: 98px;" id="pillar1-text"></div>
+        <div style="width: 46px;"></div>
+        <div style="width: 98px;" id="pillar2-text"></div>
+        <div style="width: 46px;"></div>
+        <div style="width: 98px;" id="pillar3-text"></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function onChange(t) {
+      setTimeout(() => {
+        updateValue(t.id, t.value);
+      }, 0);
+    }
+
+    function getParams() {
+      return window.location.hash.replace(/^#/, '')
+        .split('&')
+        .reduce(function (obj, pair) {
+          var values = pair.split('=');
+          if (values.length === 2) {
+            obj[values[0]] = values[1];
+          }
+          return obj;
+        }, {});
+    }
+
+    function updateValue(id, value) {
+      document.getElementById(id + '-text').innerHTML = value;
+
+      var hash = getParams();
+      hash[id] = value;
+      window.location.hash = Object.keys(hash).map(function (key) {
+        return key + '=' + hash[key];
+      }).join('&');
+    }
+
+    function onload() {
+      var hash = getParams();
+      Object.keys(hash).forEach(function (key) {
+        var elm = document.getElementById(key);
+        if (elm) {
+          elm.value = hash[key];
+        }
+      });
+
+      console.log(hash);
+
+      var inputs = document.getElementsByTagName('input');
+      for (var i = 0; i < inputs.length; i++) {
+        updateValue(inputs[i].id, inputs[i].value);
+      }
+    }
+  </script>
+</body>
+
+</html>
